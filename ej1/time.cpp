@@ -17,40 +17,40 @@ El meridiano no cambia y por defecto es AM.
 Si pones 65 minutos, se lo pasa a 5 minutos.
 */
 
-Time::Time(int hours, int minutes, int seconds, Meridiano meridiano) {
-    this->hours = hours % 12;
-    this->minutes = minutes % 60;
-    this->seconds = seconds % 60;
-    this->meridiano = meridiano;
-}
+Time::Time(int hours, int minutes, int seconds, Meridiano meridiano) :
+    hours(hours % 12),
+    minutes(minutes % 60),
+    seconds(seconds % 60),
+    meridiano(meridiano)
+{}
 
-Time::Time(int hours, int minutes, int seconds) {
-    this->hours = hours % 12;
-    this->minutes = minutes % 60;
-    this->seconds = seconds % 60;
-    this->meridiano = Meridiano::AM;
-}
+Time::Time(int hours, int minutes, int seconds) :
+    hours(hours % 12),
+    minutes(minutes % 60),
+    seconds(seconds % 60),
+    meridiano(Meridiano::AM)
+{}
 
-Time::Time(int hours, int minutes) {
-    this->hours = hours % 12;
-    this->minutes = minutes % 60;
-    this->seconds = 0;
-    this->meridiano = Meridiano::AM;
-}
+Time::Time(int hours, int minutes) :
+    hours(hours % 12),
+    minutes(minutes % 60),
+    seconds(0),
+    meridiano(Meridiano::AM)
+{}
 
-Time::Time(int hours) {
-    this->hours = hours % 12;
-    this->minutes = 0;
-    this->seconds = 0;
-    this->meridiano = Meridiano::AM;
-}
+Time::Time(int hours) :
+    hours(hours % 12),
+    minutes(0),
+    seconds(0),
+    meridiano(Meridiano::AM)
+{}
 
-Time::Time() {
-    this->hours = 0;
-    this->minutes = 0;
-    this->seconds = 0;
-    this->meridiano = Meridiano::AM;
-}
+Time::Time() :
+    hours(0),
+    minutes(0),
+    seconds(0),
+    meridiano(Meridiano::AM)
+{}
 
 /*
 Para los metodos de obtener los datos, dado que en otras consignas usa el termino "escriba por pantalla"
