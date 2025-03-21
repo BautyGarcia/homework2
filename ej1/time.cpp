@@ -5,49 +5,49 @@
 using namespace std;
 
 /*
-Para todos los constructores, manejo los ingresos invalidos con el operador modulo. Si pones horas, minutos o segundos
-de mas se los reinicia.
-
-Por ejemplo, si ponen 25 horas, se lo pasa a 1.
-Si ponen 13, se lo pasa a 1.
-Si ponen 12, se lo pasa a 0, dado que las 12 am son las 00 pm y las 12 pm son las 00 am.
-
-El meridiano no cambia y por defecto es AM.
-
-Si pones 65 minutos, se lo pasa a 5 minutos.
+Si ponen horas, minutos o segundos de mas, tiro un error, este despues lo manejo en runtime.
 */
 
-Time::Time(int hours, int minutes, int seconds, Meridiano meridiano) :
-    hours(hours % 12),
-    minutes(minutes % 60),
-    seconds(seconds % 60),
-    meridiano(meridiano)
-{}
+Time::Time(int hours, int minutes, int seconds, Meridiano meridiano) {
+    if (hours >= 12) throw invalid_argument("Las horas deben ser menores a 12");
+    if (minutes >= 60) throw invalid_argument("Los minutos deben ser menores a 60");
+    if (seconds >= 60) throw invalid_argument("Los segundos deben ser menores a 60");
+    this->hours = hours;
+    this->minutes = minutes;
+    this->seconds = seconds;
+    this->meridiano = meridiano;
+}
 
-Time::Time(int hours, int minutes, int seconds) :
-    hours(hours % 12),
-    minutes(minutes % 60),
-    seconds(seconds % 60),
-    meridiano(Meridiano::AM)
-{}
+Time::Time(int hours, int minutes, int seconds) {
+    if (hours >= 12) throw invalid_argument("Las horas deben ser menores a 12");
+    if (minutes >= 60) throw invalid_argument("Los minutos deben ser menores a 60"); 
+    if (seconds >= 60) throw invalid_argument("Los segundos deben ser menores a 60");
+    this->hours = hours;
+    this->minutes = minutes;
+    this->seconds = seconds;
+    this->meridiano = Meridiano::AM;
+}
 
-Time::Time(int hours, int minutes) :
-    hours(hours % 12),
-    minutes(minutes % 60),
-    seconds(0),
-    meridiano(Meridiano::AM)
-{}
+Time::Time(int hours, int minutes) {
+    if (hours >= 12) throw invalid_argument("Las horas deben ser menores a 12");
+    if (minutes >= 60) throw invalid_argument("Los minutos deben ser menores a 60");
+    this->hours = hours;
+    this->minutes = minutes;
+    this->seconds = 0;
+    this->meridiano = Meridiano::AM;
+}
 
-Time::Time(int hours) :
-    hours(hours % 12),
-    minutes(0),
-    seconds(0),
-    meridiano(Meridiano::AM)
-{}
+Time::Time(int hours) {
+    if (hours >= 12) throw invalid_argument("Las horas deben ser menores a 12");
+    this->hours = hours;
+    this->minutes = 0;
+    this->seconds = 0;
+    this->meridiano = Meridiano::AM;
+}
 
 Time::Time() :
     hours(0),
-    minutes(0),
+    minutes(0), 
     seconds(0),
     meridiano(Meridiano::AM)
 {}
@@ -74,17 +74,26 @@ Meridiano Time::GetMeridiano() const {
 }
 
 void Time::SetHours(int hours) {
-    if (hours >= 12) cout << "Como pusiste una hora mayor o igual a 12, lo converti a " << hours % 12 << endl;
+    if (hours >= 12) {
+        cout << "Las horas deben ser menores a 12" << endl;
+        return;
+    }
     this->hours = this->meridiano == Meridiano::AM ? hours % 12 : hours % 24;
 }
 
 void Time::SetMinutes(int minutes) {
-    if (minutes >= 60) cout << "Como pusiste minutos mayor o iguales a 60, lo converti a " << minutes % 60 << endl;
+    if (minutes >= 60) {
+        cout << "Los minutos deben ser menores a 60" << endl;
+        return;
+    }
     this->minutes = minutes % 60;
 }
 
 void Time::SetSeconds(int seconds) {
-    if (seconds >= 60) cout << "Como pusiste segundos mayor o iguales a 60, lo converti a " << seconds % 60 << endl;
+    if (seconds >= 60) {
+        cout << "Los segundos deben ser menores a 60" << endl;
+        return;
+    }
     this->seconds = seconds % 60;
 }
 

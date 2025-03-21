@@ -3,75 +3,119 @@
 
 using namespace std;
 
+void ClearScreen() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
+void HandleSetHora(Time& time) {
+    ClearScreen();
+    int newHours;
+    cout << "Ingrese horas (0-11): ";
+    cin >> newHours;
+    time.SetHours(newHours);
+}
+
+void HandleSetMinutos(Time& time) {
+    ClearScreen();
+    int newMinutes;
+    cout << "Ingrese minutos (0-59): ";
+    cin >> newMinutes;
+    time.SetMinutes(newMinutes);
+}
+
+void HandleSetSegundos(Time& time) {
+    ClearScreen();
+    int newSeconds;
+    cout << "Ingrese segundos (0-59): ";
+    cin >> newSeconds;
+    time.SetSeconds(newSeconds);
+}
+
+void HandleToggleMeridiano(Time& time) {
+    ClearScreen();
+    if (time.GetMeridiano() == Meridiano::AM) {
+        time.SetMeridiano(Meridiano::PM);
+    } else {
+        time.SetMeridiano(Meridiano::AM);
+    }
+    cout << "Cambio a " << (time.GetMeridiano() == Meridiano::AM ? "AM" : "PM") << endl;
+}
+
 int main() {
-    cout << "\n=== Prueba de Constructores ===" << endl;
-    cout << "Constructor completo (11:30:45 PM):" << endl;
-    Time t1(11, 30, 45, Meridiano::PM);
-    t1.PrintTime();
-    t1.PrintTime24();
+    Time time;
+    int choice;
+    
+    int hours, minutes, seconds;
+    string meridiano;
+    bool valid = false;
+    
+    while (!valid) {
+        ClearScreen();
+        cout << "=== Crear Tiempo ===" << endl;
+        cout << "Ingrese horas (0-11): ";
+        cin >> hours;
+        cout << "Ingrese minutos (0-59): ";
+        cin >> minutes; 
+        cout << "Ingrese segundos (0-59): ";
+        cin >> seconds;
+        cout << "Ingrese meridiano (AM/PM): ";
+        cin >> meridiano;
 
-    cout << "\nConstructor sin meridiano (13:65:75 -> 1:05:15 AM):" << endl;
-    Time t2(13, 65, 75);
-    t2.PrintTime();
-    t2.PrintTime24();
+        try {
+            time = Time(hours, minutes, seconds, meridiano == "AM" ? Meridiano::AM : Meridiano::PM);
+            valid = true;
+        } catch (invalid_argument& e) {
+            cout << "Valores de tiempo invalidos. Intente nuevamente." << endl << endl;
+        }
+    }
 
-    cout << "\nConstructor sin segundos (14:30 -> 2:30:00 AM):" << endl;
-    Time t3(14, 30);
-    t3.PrintTime();
-    t3.PrintTime24();
+    while (true) {
+        cout << "\n=== Menu ===" << endl;
+        cout << "1. Imprimir hora (12h)" << endl;
+        cout << "2. Imprimir hora (24h)" << endl;
+        cout << "3. Cambiar AM/PM" << endl;
+        cout << "4. Cambiar hora" << endl;
+        cout << "5. Cambiar minutos" << endl;
+        cout << "6. Cambiar segundos" << endl;
+        cout << "7. Salir" << endl;
+        cout << "Ingrese opcion: ";
+        cin >> choice;
 
-    cout << "\nConstructor solo horas (15 -> 3:00:00 AM):" << endl;
-    Time t4(15);
-    t4.PrintTime();
-    t4.PrintTime24();
-
-    cout << "\nConstructor vacío (0:00:00 AM):" << endl;
-    Time t5;
-    t5.PrintTime();
-    t5.PrintTime24();
-
-    cout << "\n=== Prueba de Getters ===" << endl;
-    cout << "Hora: " << t1.GetHours() << endl;
-    cout << "Minutos: " << t1.GetMinutes() << endl;
-    cout << "Segundos: " << t1.GetSeconds() << endl;
-    cout << "Meridiano: " << (t1.GetMeridiano() == Meridiano::AM ? "AM" : "PM") << endl;
-
-    cout << "\n=== Prueba de Setters ===" << endl;
-    cout << "Tiempo original:" << endl;
-    Time t6(1, 30, 45, Meridiano::AM);
-    t6.PrintTime();
-
-    cout << "\nCambiando hora a 14 (debería convertir a 2):" << endl;
-    t6.SetHours(14);
-    t6.PrintTime();
-
-    cout << "\nCambiando minutos a 75 (debería convertir a 15):" << endl;
-    t6.SetMinutes(75);
-    t6.PrintTime();
-
-    cout << "\nCambiando segundos a 90 (debería convertir a 30):" << endl;
-    t6.SetSeconds(90);
-    t6.PrintTime();
-
-    cout << "\nCambiando meridiano a PM:" << endl;
-    t6.SetMeridiano(Meridiano::PM);
-    t6.PrintTime();
-
-    cout << "\n=== Prueba de casos límite ===" << endl;
-    cout << "Hora 12 (debería convertir a 0):" << endl;
-    Time t7(12, 0, 0, Meridiano::AM);
-    t7.PrintTime();
-    t7.PrintTime24();
-
-    cout << "\nHora 24 (debería convertir a 0):" << endl;
-    Time t8(24, 0, 0, Meridiano::AM);
-    t8.PrintTime();
-    t8.PrintTime24();
-
-    cout << "\nValores grandes (99:99:99):" << endl;
-    Time t9(99, 99, 99, Meridiano::PM);
-    t9.PrintTime();
-    t9.PrintTime24();
-
-    return 0;
+        switch (choice) {
+            case 1:
+                ClearScreen();
+                time.PrintTime();
+                break;
+            case 2:
+                ClearScreen();
+                time.PrintTime24();
+                break;
+            case 3: {
+                HandleToggleMeridiano(time);
+                break;
+            }
+            case 4: {
+                HandleSetHora(time);
+                break;
+            }
+            case 5: {
+                HandleSetMinutos(time);
+                break;
+            }
+            case 6: {
+                HandleSetSegundos(time);
+                break;
+            }
+            case 7:
+                cout << "Chauches" << endl;
+                return 0;
+            default:
+                ClearScreen();
+                cout << "Pusiste cualquiera" << endl;
+        }
+    }
 }
