@@ -57,19 +57,19 @@ Para los metodos de obtener los datos, dado que en otras consignas usa el termin
 y aca no lo especifica, interpreto que quiere que lo devuelva.
 */
 
-int Time::GetHours() {
+int Time::GetHours() const {
     return this->hours;
 }
 
-int Time::GetMinutes() {
+int Time::GetMinutes() const {
     return this->minutes;
 }
 
-int Time::GetSeconds() {
+int Time::GetSeconds() const {
     return this->seconds;
 }
 
-Meridiano Time::GetMeridiano() {
+Meridiano Time::GetMeridiano() const {
     return this->meridiano;
 }
 
@@ -92,7 +92,7 @@ void Time::SetMeridiano(Meridiano meridiano) {
     this->meridiano = meridiano;
 }
 
-void Time::PrintTime() {
+void Time::PrintTime() const {
     cout 
     << std::setfill('0') << std::setw(2) << this->GetHours() << "h, "
     << std::setfill('0') << std::setw(2) << this->GetMinutes() << "m, "
@@ -101,7 +101,7 @@ void Time::PrintTime() {
     << endl;
 }
 
-void Time::PrintTime24() {
+void Time::PrintTime24() const {
     cout 
     << std::setfill('0') << std::setw(2) << this->GetHours() + (this->GetMeridiano() == Meridiano::PM ? 12 : 0) << "h, "
     << std::setfill('0') << std::setw(2) << this->GetMinutes() << "m, "
