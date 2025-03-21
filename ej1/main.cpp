@@ -3,6 +3,7 @@
 
 using namespace std;
 
+// Script de stack overflow para limpiar la pantalla
 void ClearScreen() {
     #ifdef _WIN32
         system("cls");
@@ -11,6 +12,7 @@ void ClearScreen() {
     #endif
 }
 
+// Aca para abajo son todos wrappers para que el switch sea mas legible
 void HandleSetHora(Time& time) {
     ClearScreen();
     int newHours;
@@ -53,8 +55,7 @@ int main() {
     string meridiano;
     bool valid = false;
     
-    while (!valid) {
-        ClearScreen();
+    while (!valid) { 
         cout << "=== Crear Tiempo ===" << endl;
         cout << "Ingrese horas (0-11): ";
         cin >> hours;
@@ -62,16 +63,19 @@ int main() {
         cin >> minutes; 
         cout << "Ingrese segundos (0-59): ";
         cin >> seconds;
-        cout << "Ingrese meridiano (AM/PM): ";
+        cout << "Ingrese meridiano (AM/PM) (default: AM): ";
         cin >> meridiano;
 
         try {
-            time = Time(hours, minutes, seconds, meridiano == "AM" ? Meridiano::AM : Meridiano::PM);
+            time = Time(hours, minutes, seconds, meridiano == "PM" ? Meridiano::PM : Meridiano::AM);
             valid = true;
         } catch (invalid_argument& e) {
+            ClearScreen();
             cout << "Valores de tiempo invalidos. Intente nuevamente." << endl << endl;
         }
     }
+
+    ClearScreen();
 
     while (true) {
         cout << "\n=== Menu ===" << endl;
