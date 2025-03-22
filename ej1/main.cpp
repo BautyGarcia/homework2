@@ -77,7 +77,7 @@ int main() {
 
     ClearScreen();
 
-    while (true) {
+    do {
         cout << "\n=== Menu ===" << endl;
         cout << "1. Imprimir hora (12h)" << endl;
         cout << "2. Imprimir hora (24h)" << endl;
@@ -114,12 +114,8 @@ int main() {
                 HandleSetSegundos(time);
                 break;
             }
-            case 7:
-                cout << "Chauches" << endl;
-                return 0;
-            default:
-                ClearScreen();
-                cout << "Pusiste cualquiera" << endl;
         }
-    }
+    } while (choice != 7);
+
+    return 0;
 }
