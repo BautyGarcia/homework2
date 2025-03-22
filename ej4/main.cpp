@@ -4,27 +4,22 @@
 using namespace std;
 
 int main() {
-    // Create accounts
-    CuentaAhorro* cajaAhorro = new CuentaAhorro("Juan", 1000);
-    CuentaCorriente* cuentaCorriente = new CuentaCorriente(cajaAhorro);
+    CuentaAhorro cajaAhorro = CuentaAhorro("Juan", 1000);
+    CuentaCorriente cuentaCorriente = CuentaCorriente(&cajaAhorro);
 
     cout << "\n=== Test CuentaAhorro ===" << endl;
-    cajaAhorro->retirar(200);
+    cajaAhorro.retirar(200);
     
-    //cajaAhorro->mostrarInfo();  // First display
-    //cajaAhorro->mostrarInfo();  // Second display
-    //cajaAhorro->mostrarInfo();  // Third display (should charge fee)
+    cajaAhorro.mostrarInfo();
+    cajaAhorro.mostrarInfo();
+    cajaAhorro.mostrarInfo();
     
     cout << "\n=== Test CuentaCorriente withdrawals ===" << endl;
-    cuentaCorriente->retirar(100);  // Should withdraw from CuentaAhorro
-    //cajaAhorro->mostrarInfo();      // Check remaining balance
+    cuentaCorriente.retirar(100);
+    cajaAhorro.mostrarInfo();
     
     cout << "\n=== Test insufficient funds ===" << endl;
-    cuentaCorriente->retirar(2000); // Should fail - not enough money
+    cuentaCorriente.retirar(2000);
 
-    // Clean up
-    delete cajaAhorro;
-    delete cuentaCorriente;
-    
     return 0;
 }
