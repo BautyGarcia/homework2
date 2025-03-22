@@ -2,50 +2,81 @@
 
 int main() {
     Curso curso;
-
-    cout << "\n=== Creo y agrego alumnos ===" << endl;
-    Alumno alumno1("Papo", 101);
-    Alumno alumno2("Pepe", 102);
-    Alumno alumno3("Pipi", 103);
-    Alumno alumno4("Popo", 104);
-    Alumno alumno5("Pupu", 105);
+    int opcion;
     
-    cout << "\n=== Agrego 5 alumnos ===" << endl;
-    curso.AddAlumno(&alumno1);
-    curso.AddAlumno(&alumno2);
-    curso.AddAlumno(&alumno3);
-    curso.AddAlumno(&alumno4);
-    curso.AddAlumno(&alumno5);
+    do {
+        // Show status bar
+        cout << "\n=== Estado del Curso ===" << endl;
+        cout << "Capacidad: [";
+        for (int i = 0; i < 20; i++) {
+            cout << (curso.IsFull() ? "█" : "░");
+        }
+        cout << "]" << endl;
 
-    cout << "\n=== Alumnos ===" << endl;
-    cout << alumno1 << endl;
-    cout << alumno2 << endl;
-    cout << alumno3 << endl;
-    cout << alumno4 << endl;
-    cout << alumno5 << endl;
-    
-    cout << "\n=== Verificación de Alumnos ===" << endl;
-    cout << "¿Existe alumno con legajo 101? " << (curso.IsAlumno(101) ? "Sí" : "No") << endl;
-    cout << "¿Existe alumno con legajo 999? " << (curso.IsAlumno(999) ? "Sí" : "No") << endl;
+        // Menu options
+        cout << "\n=== Menú Principal ===" << endl;
+        cout << "1. Agregar alumno" << endl;
+        cout << "2. Eliminar alumno" << endl;
+        cout << "3. Verificar alumno por legajo" << endl;
+        cout << "4. Mostrar lista ordenada" << endl;
+        cout << "0. Salir" << endl;
+        cout << "Ingrese una opción: ";
+        cin >> opcion;
 
-    cout << "\n=== Lista Ordenada Alfabéticamente ===" << endl;
-    curso.PrintAlumnosOrdenados();
-
-    cout << "\n=== Prueba de Eliminación ===" << endl;
-    cout << "Removiendo alumno con legajo 103 (Pipi)..." << endl;
-    curso.RemoveAlumno(103);
-    cout << "Intentando remover alumno inexistente (legajo 999)..." << endl;
-    curso.RemoveAlumno(999);
-    
-    cout << "\n=== Lista Final Ordenada ===" << endl;
-    curso.PrintAlumnosOrdenados();
-
-    cout << "\n=== Prueba de Límite de Alumnos (Trato de agregar 20 alumnos) ===" << endl;
-    for (int i = 0; i < 20; i++) {
-        Alumno temp("Estudiante" + to_string(i), 200 + i);
-        curso.AddAlumno(&temp);
-    }
-    cout << "¿Está lleno el curso? " << (curso.IsFull() ? "Sí" : "No") << endl;
+        switch (opcion) {
+            case 1: {
+                if (curso.IsFull()) {
+                    cout << "Error: El curso está lleno" << endl;
+                    break;
+                }
+                string nombre;
+                int legajo;
+                cout << "Ingrese nombre del alumno: ";
+                cin.ignore();
+                getline(cin, nombre);
+                cout << "Ingrese legajo: ";
+                cin >> legajo;
+                
+                Alumno* alumno = new Alumno(nombre, legajo);
+                curso.AddAlumno(alumno);
+                break;
+            }
+            case 2: {
+                int legajo;
+                cout << "Ingrese legajo del alumno a eliminar: ";
+                cin >> legajo;
+                curso.RemoveAlumno(legajo);
+                break;
+            }
+            case 3: {
+                int legajo;
+                cout << "Ingrese legajo a verificar: ";
+                cin >> legajo;
+                cout << "El alumno " << (curso.IsAlumno(legajo) ? "existe" : "no existe") 
+                     << " en el curso" << endl;
+                break;
+            }
+            case 4: {
+                cout << "\n=== Lista de Alumnos Ordenada ===" << endl;
+                curso.PrintAlumnosOrdenados();
+                break;
+            }
+            case 0: {
+                cout << "Saliendo del programa..." << endl;
+                break;
+            }
+            default: {
+                cout << "Opción inválida" << endl;
+                break;
+            }
+        }
+        
+        cout << "\nPresione Enter para continuar...";
+        cin.ignore();
+        cin.get();
+        system("clear"); // Use "cls" instead of "clear" on Windows
+        
+    } while (opcion != 0);
 
     return 0;
 }
