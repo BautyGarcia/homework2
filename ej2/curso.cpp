@@ -83,3 +83,7 @@ void Curso::PrintAlumnosOrdenados() const {
         cout << alumno << endl;
     }
 }
+
+int Curso::GetCantidadAlumnos() const {
+    return this->alumnos.size();
+}

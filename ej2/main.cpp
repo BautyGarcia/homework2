@@ -1,19 +1,62 @@
 #include "curso.hpp"
+#include <iomanip>
+#define MAX_ALUMNOS 20
+
+// Script de stack overflow para limpiar la pantalla
+void ClearScreen() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
+void showStatusBar(Curso& curso) {
+    int cantidadAlumnos = curso.GetCantidadAlumnos();
+    cout << "Capacidad: [";
+    cout << std::string(cantidadAlumnos, '#') << std::string(MAX_ALUMNOS - cantidadAlumnos, '_');
+    cout << "] (" << cantidadAlumnos << "/" << MAX_ALUMNOS << ")" << endl;
+}
+
+void handleAddAlumno(Curso& curso) {
+    if (curso.IsFull()) {
+        cout << "Error: El curso está lleno" << endl;
+        return;
+    }
+    string nombre;
+    int legajo;
+    cout << "Ingrese nombre del alumno: ";
+    cin.ignore();
+    getline(cin, nombre);
+    cout << "Ingrese legajo: ";
+    cin >> legajo;
+    
+    Alumno* alumno = new Alumno(nombre, legajo);
+    curso.AddAlumno(alumno);
+}
+
+void handleRemoveAlumno(Curso& curso) {
+    int legajo;
+    cout << "Ingrese legajo del alumno a eliminar: ";
+    cin >> legajo;
+    curso.RemoveAlumno(legajo);
+}
+
+void handleCheckAlumno(Curso& curso) {
+    int legajo;
+    cout << "Ingrese legajo a verificar: ";
+    cin >> legajo;
+    cout << "El alumno " << (curso.IsAlumno(legajo) ? "existe" : "no existe") << " en el curso" << endl;
+}
 
 int main() {
+    ClearScreen();
     Curso curso;
     int opcion;
-    
-    do {
-        // Show status bar
-        cout << "\n=== Estado del Curso ===" << endl;
-        cout << "Capacidad: [";
-        for (int i = 0; i < 20; i++) {
-            cout << (curso.IsFull() ? "█" : "░");
-        }
-        cout << "]" << endl;
 
-        // Menu options
+    do {
+        showStatusBar(curso);
+
         cout << "\n=== Menú Principal ===" << endl;
         cout << "1. Agregar alumno" << endl;
         cout << "2. Eliminar alumno" << endl;
@@ -25,35 +68,15 @@ int main() {
 
         switch (opcion) {
             case 1: {
-                if (curso.IsFull()) {
-                    cout << "Error: El curso está lleno" << endl;
-                    break;
-                }
-                string nombre;
-                int legajo;
-                cout << "Ingrese nombre del alumno: ";
-                cin.ignore();
-                getline(cin, nombre);
-                cout << "Ingrese legajo: ";
-                cin >> legajo;
-                
-                Alumno* alumno = new Alumno(nombre, legajo);
-                curso.AddAlumno(alumno);
+                handleAddAlumno(curso);
                 break;
             }
             case 2: {
-                int legajo;
-                cout << "Ingrese legajo del alumno a eliminar: ";
-                cin >> legajo;
-                curso.RemoveAlumno(legajo);
+                handleRemoveAlumno(curso);
                 break;
             }
             case 3: {
-                int legajo;
-                cout << "Ingrese legajo a verificar: ";
-                cin >> legajo;
-                cout << "El alumno " << (curso.IsAlumno(legajo) ? "existe" : "no existe") 
-                     << " en el curso" << endl;
+                handleCheckAlumno(curso);
                 break;
             }
             case 4: {
@@ -74,8 +97,7 @@ int main() {
         cout << "\nPresione Enter para continuar...";
         cin.ignore();
         cin.get();
-        system("clear"); // Use "cls" instead of "clear" on Windows
-        
+        ClearScreen();
     } while (opcion != 0);
 
     return 0;

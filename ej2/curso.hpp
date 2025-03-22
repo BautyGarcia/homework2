@@ -34,4 +34,5 @@ class Curso {
         bool IsAlumno(int legajo) const;
         bool IsFull() const;
         void PrintAlumnosOrdenados() const;
+        int GetCantidadAlumnos() const; // Funcion auxiliar para el status bar
 };
