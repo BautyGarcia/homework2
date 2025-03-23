@@ -9,44 +9,47 @@ CuentaAhorro::CuentaAhorro(string titular, double balance) : CuentaBancaria(titu
 
 CuentaCorriente::CuentaCorriente(CuentaAhorro* cuentaAhorro) : CuentaBancaria(cuentaAhorro->titular, 0), cuentaAhorro(cuentaAhorro) {}
 
+void CuentaBancaria::depositar(double cantidad) {
+    this->balance += cantidad;
+}
+
 void CuentaAhorro::mostrarInfo() {
     this->contadorMostrarInfo++;
 
     if (this->contadorMostrarInfo > this->LIMITE_MOSTRAR) {
-        cout << "No se puede mostrar info mas de " << this->LIMITE_MOSTRAR << " veces, se cobrará un cargo de " << this->COSTO_MOSTRAR << "€" << endl;
+        cout << "No se puede mostrar info mas de " << this->LIMITE_MOSTRAR << " veces, se cobrará un cargo de " << this->COSTO_MOSTRAR << "$" << endl;
         this->retirar(this->COSTO_MOSTRAR);
-        return;
     }
 
     cout << "Titular: " << this->titular << endl;
-    cout << "Balance: " << this->getBalance() << endl;
+    cout << "Balance: " << this->balance << "$" << endl;
 }
 
 void CuentaAhorro::retirar(double cantidad) {
-    if (this->getBalance() - cantidad < 0) {
-        cout << "No se puede retirar " << cantidad << "$, el balance es " << this->getBalance() << "$" << endl;
+    if (this->balance - cantidad < 0) {
+        cout << "No se puede retirar " << cantidad << "$, el balance es " << this->balance << "$" << endl;
         return;
     }
-    this->setBalance(this->getBalance() - cantidad);
+    this->balance = this->balance - cantidad;
+    cout << "Se retiraron los " << cantidad << "$ de la cuenta ahorro" << endl;
 }
 
 void CuentaCorriente::mostrarInfo() {
     cout << "Titular: " << this->titular << endl;
-    cout << "Balance: " << this->getBalance() << endl;
+    cout << "Balance: " << this->balance << "$" << endl;
 }
 
 void CuentaCorriente::retirar(double cantidad) {
-    if (this->getBalance() - cantidad > 0) {
-        this->retirar(cantidad);
+    if (this->balance - cantidad > 0) {
+        this->balance = this->balance - cantidad;
         cout << "Se retiraron los " << cantidad << "$ de la cuenta corriente" << endl;
         return;
     }
 
     cout << "No hay fondos suficientes en la cuenta corriente" << endl;
 
-    if (this->cuentaAhorro->getBalance() - cantidad > 0) {
+    if (this->cuentaAhorro->balance - cantidad > 0) {
         this->cuentaAhorro->retirar(cantidad);
-        cout << "Se retiraron los " << cantidad << "$ de la cuenta ahorro" << endl;
         return;
     }
 

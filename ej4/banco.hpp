@@ -3,12 +3,11 @@
 using namespace std;
 
 class CuentaBancaria {
-    private:
-        double balance;
+    // Atributos protegidos para que las subclases puedan acceder a ellos y no tener que hacer getters/setters
     protected:
         string titular;
-        double getBalance() const { return balance; };
-        void setBalance(double balance) { this->balance = balance; };
+        double balance;
+    // Metodos publicos para que se puedan usar en el main
     public:
         CuentaBancaria(string titular, double balance);
         void depositar(double cantidad);
@@ -18,23 +17,24 @@ class CuentaBancaria {
 };
 
 class CuentaAhorro : public CuentaBancaria {
+    // Atributos privados para cobrar cuando usas mostrarInfo mas de LIMITE_MOSTRAR (2) veces
     private:
         int contadorMostrarInfo = 0;
         static const int COSTO_MOSTRAR = 20;
         static const int LIMITE_MOSTRAR = 2;
-        void mostrarInfo() override;
     public:
         void retirar(double cantidad) override;
+        void mostrarInfo() override;
         CuentaAhorro(string titular, double balance);
+        // Friend class para que la clase CuentaCorriente pueda acceder a los atributos privados de CuentaAhorro
         friend class CuentaCorriente;
 };
 
 class CuentaCorriente : public CuentaBancaria {
     private:
-        void mostrarInfo() override;
         CuentaAhorro* cuentaAhorro;
     public:
         void retirar(double cantidad) override;
-        bool tieneFondosSuficientes(CuentaAhorro* cuentaAhorro, double cantidad) const;
+        void mostrarInfo() override;
         CuentaCorriente(CuentaAhorro* cuentaAhorro);
 };
