@@ -35,9 +35,9 @@ bool Alumno::operator>(const Alumno& other) const {
     return this->GetNombre() > other.GetNombre();
 }
 
-Curso::Curso() {
-    this->alumnos = vector<Alumno>();
-}
+Curso::Curso() : alumnos(vector<Alumno>()) {}
+
+Curso::Curso(const Curso& other) : alumnos(other.alumnos) {}
 
 void Curso::AddAlumno(Alumno* alumno) {
     if (this->alumnos.size() >= MAX_ALUMNOS) {
@@ -45,7 +45,6 @@ void Curso::AddAlumno(Alumno* alumno) {
         return;
     }
 
-    // Preguntar porque si lo doy vuelta no funciona
     alumno->AgregarCurso(this, 10);
     this->alumnos.push_back(*alumno);
 }

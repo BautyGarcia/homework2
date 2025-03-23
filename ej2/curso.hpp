@@ -29,6 +29,17 @@ class Curso {
         vector<Alumno> alumnos;
     public:
         Curso();
+        /*
+            (b -> v) Constructor de copia para el curso
+
+            Se hace una shallow copy del curso, esto se debe a que (segun lo que busque) el vector<Alumno> ya tiene
+            implementada su propia copia profunda al ser copiado, ademas los Alumnos dentro del vector son objetos
+            y no punteros, por lo que tambien se copian completamente.
+
+            (c) La relacion Curso-Alumno es bidireccional ya que el curso tiene copias completas de los alumnos
+            y los alumnos mantienen punteros al Curso original en su vector de CursoNota.
+        */
+        Curso(const Curso& other);
         void AddAlumno(Alumno* alumno);
         void RemoveAlumno(int legajo);
         bool IsAlumno(int legajo) const;
