@@ -21,7 +21,6 @@ class Entero : public Numero {
         Numero* multiplicacion(Numero* otro) override;
         string toString() const override;
         int getValor() const { return valor; };
-        ~Entero() override = default;
 };
 
 class Real : public Numero {
@@ -34,7 +33,6 @@ class Real : public Numero {
         Numero* multiplicacion(Numero* otro) override;
         string toString() const override;
         double getValor() const { return valor; };
-        ~Real() override = default;
 };
 
 class Complejo : public Numero {
@@ -49,5 +47,4 @@ class Complejo : public Numero {
         string toString() const override;
         double getReal() const { return real; }
         double getImaginario() const { return imaginario; }
-        ~Complejo() override = default;
 };
