@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TIME_HPP
+#define TIME_HPP
 
 enum class Meridiano {
     AM,
@@ -28,3 +29,5 @@ class Time {
         void PrintTime() const;
         void PrintTime24() const;
 };
+
+#endif
