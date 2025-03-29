@@ -1,51 +1,40 @@
+#ifndef CURSO_HPP
+#define CURSO_HPP
+
 #include <iostream>
 #include <string>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
-class Curso;
-
-struct CursoNota {
-    Curso* curso;
-    int nota;
-};
-
-class Alumno {
-    private:
-        string nombre;
-        int legajo;
-        vector<CursoNota> cursos;
-    public:
-        Alumno(string nombre, int legajo);
-        float GetPromedioGeneral() const;
-        int GetLegajo() const;
-        string GetNombre() const;
-        void AgregarCurso(Curso* curso, int nota);
-        friend ostream& operator<<(ostream& os, const Alumno& alumno);
-        bool operator>(const Alumno& other) const;
-};
+class Alumno;
 
 class Curso {
     private:
         string nombre;
-        vector<Alumno> alumnos;
+        vector<Alumno*> alumnos;
     public:
-        Curso();
+        Curso(string nombre);
         /*
             (b -> v) Constructor de copia para el curso
 
-            Se hace una shallow copy del curso, esto se debe a que (segun lo que busque) el vector<Alumno> ya tiene
-            implementada su propia copia profunda al ser copiado, ademas los Alumnos dentro del vector son objetos
-            y no punteros, por lo que tambien se copian completamente.
+            Dado que tengo un vector de punteros a Alumno, se hace una deep copy de los punteros, de otra forma
+            se estarian creando copias que apuntan a los mismos alumnos, lo que terminaria en que si borro, por ejemplo, la copia
+            de un curso, tambien estaria borrando el alumno del curso original.
 
             (c) La relacion Curso-Alumno es bidireccional ya que el curso tiene copias completas de los alumnos
             y los alumnos mantienen punteros al Curso original en su vector de CursoNota.
         */
         Curso(const Curso& other);
-        void AddAlumno(Alumno* alumno);
+        string GetNombre() const;
+        void AddAlumno(Alumno* alumno, int nota);
         void RemoveAlumno(int legajo);
         bool IsAlumno(int legajo) const;
         bool IsFull() const;
         void PrintAlumnosOrdenados() const;
         int GetCantidadAlumnos() const; // Funcion auxiliar para el status bar
+        ~Curso();
 };
+
+#endif
