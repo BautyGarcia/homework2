@@ -1,4 +1,5 @@
 #include "time.hpp"
+#include "helpers.hpp"
 #include <iostream>
 #include <string>
 
@@ -17,26 +18,17 @@ void ClearScreen() {
 
 void HandleSetHora(Time& time) {
     ClearScreen();
-    int newHours;
-    cout << "Ingrese horas (0-11): ";
-    cin >> newHours;
-    time.SetHours(newHours);
+    time.SetHours(getHours());
 }
 
 void HandleSetMinutos(Time& time) {
     ClearScreen();
-    int newMinutes;
-    cout << "Ingrese minutos (0-59): ";
-    cin >> newMinutes;
-    time.SetMinutes(newMinutes);
+    time.SetMinutes(getMinutes());
 }
 
 void HandleSetSegundos(Time& time) {
     ClearScreen();
-    int newSeconds;
-    cout << "Ingrese segundos (0-59): ";
-    cin >> newSeconds;
-    time.SetSeconds(newSeconds);
+    time.SetSeconds(getSeconds());
 }
 
 // Considere que dado que son 2 opciones, un toggle es mas practico que un set
@@ -47,7 +39,7 @@ void HandleToggleMeridiano(Time& time) {
     } else {
         time.SetMeridiano(Meridiano::AM);
     }
-    cout << "Cambio a " << (time.GetMeridiano() == Meridiano::AM ? "AM" : "PM") << endl;
+    cout << "Meridiano cambiado a " << (time.GetMeridiano() == Meridiano::AM ? "AM" : "PM") << endl;
 }
 
 // getters/handlers para el menu de inicializacion
@@ -103,17 +95,27 @@ void HandleDefaultInit(Time& time) {
 }
 
 void HandleHHInit(Time& time) {
-    time = Time(getHours(), 0, 0, Meridiano::AM);
+    time = Time(getHours());
 }
 
 void HandleHHMMInit(Time& time) {
-    time = Time(getHours(), getMinutes(), 0, Meridiano::AM);
+    time = Time(getHours(), getMinutes());
 }
 
 void HandleHHMMSSInit(Time& time) {
-    time = Time(getHours(), getMinutes(), getSeconds(), Meridiano::AM);
+    time = Time(getHours(), getMinutes(), getSeconds());
 }
 
 void HandleHHMMSSAMPMInit(Time& time) {
     time = Time(getHours(), getMinutes(), getSeconds(), getMeridiano());
+}
+
+// Helper para validar que el input sea un numero
+bool isValidInput() {
+    if (!cin) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return false;
+    }
+    return true;
 }

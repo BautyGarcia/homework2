@@ -1,6 +1,7 @@
 #include "time.hpp"
 #include "helpers.hpp"
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -23,6 +24,12 @@ int main() {
         cout << "Ingrese opcion: ";
         cin >> choice;
 
+        if (!isValidInput()) {
+            ClearScreen();
+            cout << "Error: Debe ingresar un número" << endl;
+            continue;
+        }
+        
         switch (choice) {
             case 1:
                 HandleDefaultInit(time);
@@ -69,6 +76,12 @@ int main() {
         cout << "11. Salir" << endl;
         cout << "Ingrese opcion: ";
         cin >> choice;
+
+        if (!isValidInput()) {
+            ClearScreen();
+            cout << "Error: Debe ingresar un número" << endl;
+            continue;
+        }
 
         switch (choice) {
             case 1:

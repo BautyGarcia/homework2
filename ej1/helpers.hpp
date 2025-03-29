@@ -17,3 +17,5 @@ void HandleHHInit(Time& time);
 void HandleHHMMInit(Time& time);
 void HandleHHMMSSInit(Time& time);
 void HandleHHMMSSAMPMInit(Time& time);
+
+bool isValidInput();

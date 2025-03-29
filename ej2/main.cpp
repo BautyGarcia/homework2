@@ -1,5 +1,7 @@
 #include "curso.hpp"
 #include <iomanip>
+#include <string>
+
 #define MAX_ALUMNOS 20
 
 // Script de stack overflow para limpiar la pantalla

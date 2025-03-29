@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -26,6 +27,7 @@ class Alumno {
 
 class Curso {
     private:
+        string nombre;
         vector<Alumno> alumnos;
     public:
         Curso();
