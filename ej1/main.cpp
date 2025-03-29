@@ -1,5 +1,5 @@
 #include "time.hpp"
-#include "helpers.hpp"
+#include "utils.hpp"
 #include <iostream>
 #include <string>
 
@@ -29,7 +29,7 @@ int main() {
             cout << "Error: Debe ingresar un número" << endl;
             continue;
         }
-        
+
         switch (choice) {
             case 1:
                 HandleDefaultInit(time);
