@@ -23,8 +23,11 @@ class Curso {
             se estarian creando copias que apuntan a los mismos alumnos, lo que terminaria en que si borro, por ejemplo, la copia
             de un curso, tambien estaria borrando el alumno del curso original.
 
-            (c) La relacion Curso-Alumno es bidireccional ya que el curso tiene copias completas de los alumnos
-            y los alumnos mantienen punteros al Curso original en su vector de CursoNota.
+            (c) La relacion Curso-Alumno corresponde con la de Agregacion. Los alumnos pueden 
+            ser anotados, desanotados, buscados, ser evaluados, etc. 
+            En cuanto a su lifetime, en el caso de que el curso se cierre, los alumnos pueden cambiar 
+            de curso sin dejar de ser alumnos. O bien, si se mueren todos los alumnos, el 
+            curso deberá de anotar más alumnos, pero no dejar de existir.
         */
         Curso(const Curso& other);
         string GetNombre() const;
