@@ -1,51 +1,8 @@
 #include "time.hpp"
+#include "helpers.hpp"
 #include <iostream>
 
 using namespace std;
-
-// Script de stack overflow para limpiar la pantalla
-void ClearScreen() {
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
-}
-
-// Aca para abajo son todos wrappers para que el switch sea mas legible
-void HandleSetHora(Time& time) {
-    ClearScreen();
-    int newHours;
-    cout << "Ingrese horas (0-11): ";
-    cin >> newHours;
-    time.SetHours(newHours);
-}
-
-void HandleSetMinutos(Time& time) {
-    ClearScreen();
-    int newMinutes;
-    cout << "Ingrese minutos (0-59): ";
-    cin >> newMinutes;
-    time.SetMinutes(newMinutes);
-}
-
-void HandleSetSegundos(Time& time) {
-    ClearScreen();
-    int newSeconds;
-    cout << "Ingrese segundos (0-59): ";
-    cin >> newSeconds;
-    time.SetSeconds(newSeconds);
-}
-
-void HandleToggleMeridiano(Time& time) {
-    ClearScreen();
-    if (time.GetMeridiano() == Meridiano::AM) {
-        time.SetMeridiano(Meridiano::PM);
-    } else {
-        time.SetMeridiano(Meridiano::AM);
-    }
-    cout << "Cambio a " << (time.GetMeridiano() == Meridiano::AM ? "AM" : "PM") << endl;
-}
 
 int main() {
     Time time;
@@ -55,29 +12,49 @@ int main() {
     string meridiano;
     bool valid = false;
     
-    while (!valid) { 
-        cout << "=== Crear Tiempo ===" << endl;
-        cout << "Ingrese horas (0-11): ";
-        cin >> hours;
-        cout << "Ingrese minutos (0-59): ";
-        cin >> minutes; 
-        cout << "Ingrese segundos (0-59): ";
-        cin >> seconds;
-        cout << "Ingrese meridiano (AM/PM) (default: AM): ";
-        cin >> meridiano;
+    // Primer menu para explicitamente decir en que formato se inicializa el reloj
+    while (!valid) {
+        cout << "=== Seleccione el formato de inicialización ===" << endl;
+        cout << "1. Hora por defecto (00:00:00 AM)" << endl;
+        cout << "2. Solo Hora (HH AM)" << endl;
+        cout << "3. Hora y Minutos (HH:MM AM)" << endl;
+        cout << "4. Hora, Minutos y Segundos (HH:MM:SS AM)" << endl;
+        cout << "5. Hora, Minutos, Segundos y Meridiano (HH:MM:SS AM/PM)" << endl;
+        cout << "Ingrese opcion: ";
+        cin >> choice;
 
-        try {
-            time = Time(hours, minutes, seconds, meridiano == "PM" ? Meridiano::PM : Meridiano::AM);
-            valid = true;
-        } catch (invalid_argument& e) {
-            ClearScreen();
-            cout << "Valores de tiempo invalidos. Intente nuevamente." << endl << endl;
+        switch (choice) {
+            case 1:
+                HandleDefaultInit(time);
+                valid = true;
+                break;
+            case 2:
+                HandleHHInit(time);
+                valid = true;
+                break;
+            case 3:
+                HandleHHMMInit(time);
+                valid = true;
+                break;
+            case 4:
+                HandleHHMMSSInit(time);
+                valid = true;
+                break;
+            case 5:
+                HandleHHMMSSAMPMInit(time);
+                valid = true;
+                break;
+            default:
+                ClearScreen();
+                cout << "Opción inválida. Por favor, ingrese una opción válida." << endl;
+                break;
         }
     }
 
     ClearScreen();
 
-    do {
+    // Menu principal para cambiar el reloj
+    while (choice != 11) {
         cout << "\n=== Menu ===" << endl;
         cout << "1. Imprimir hora (12h)" << endl;
         cout << "2. Imprimir hora (24h)" << endl;
@@ -85,7 +62,11 @@ int main() {
         cout << "4. Cambiar hora" << endl;
         cout << "5. Cambiar minutos" << endl;
         cout << "6. Cambiar segundos" << endl;
-        cout << "7. Salir" << endl;
+        cout << "7. Ver AM/PM" << endl;
+        cout << "8. Ver horas" << endl;
+        cout << "9. Ver minutos" << endl;
+        cout << "10. Ver segundos" << endl;
+        cout << "11. Salir" << endl;
         cout << "Ingrese opcion: ";
         cin >> choice;
 
@@ -114,8 +95,34 @@ int main() {
                 HandleSetSegundos(time);
                 break;
             }
+            case 7: {
+                ClearScreen();
+                cout << (time.GetMeridiano() == Meridiano::AM ? "a.m." : "p.m.") << endl;
+                break;
+            }
+            case 8: {
+                ClearScreen();
+                cout << time.GetHours() << "h" << endl;
+                break;
+            }
+            case 9: {
+                ClearScreen();
+                cout << time.GetMinutes() << "m" << endl;
+                break;
+            }
+            case 10: {
+                ClearScreen();
+                cout << time.GetSeconds() << "s" << endl;
+                break;
+            }
+            default: {
+                ClearScreen();
+                cout << "Opción inválida. Por favor, ingrese una opción válida." << endl;
+                break;
+            }
         }
-    } while (choice != 7);
+    }
 
+    ClearScreen();
     return 0;
 }

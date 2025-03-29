@@ -54,7 +54,7 @@ int main() {
     Curso curso;
     int opcion;
 
-    do {
+    do { // While(true)
         showStatusBar(curso);
 
         cout << "\n=== Menú Principal ===" << endl;
