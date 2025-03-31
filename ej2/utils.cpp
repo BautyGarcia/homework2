@@ -82,14 +82,18 @@ string getCursoNombreInput() {
     return nombre;
 }
 
-// Auxiliar que busca un alumno en el vector de alumnos y si no lo encuentra, lo crea
-Alumno* findOrCreateAlumno(vector<Alumno*>& todosAlumnosPtrs, int legajo, const string& nombre) {
+// Auxiliar que busca un alumno en el vector de alumnos
+Alumno* findAlumno(vector<Alumno*>& todosAlumnosPtrs, int legajo) {
     for (Alumno* ptr : todosAlumnosPtrs) {
         if (ptr->GetLegajo() == legajo) {
             return ptr;
         }
     }
+    return nullptr;
+}
 
+// Auxiliar que crea un alumno y lo agrega al vector de alumnos
+Alumno* createAlumno(vector<Alumno*>& todosAlumnosPtrs, int legajo, const string& nombre) {
     try {
         Alumno* nuevoAlumnoPtr = new Alumno(nombre, legajo);
         todosAlumnosPtrs.push_back(nuevoAlumnoPtr);
@@ -118,28 +122,50 @@ void handleAddAlumno(Curso* curso, vector<Alumno*>& alumnos) {
 
     ClearScreen();
 
-    int legajo;
-    string nombre;
-    int nota;
+    int legajo = getAlumnoLegajoInput();
 
-    legajo = getAlumnoLegajoInput();
-
+    // Si el alumno ya esta inscrito en el curso, no se puede agregar
     if (curso->IsAlumno(legajo)) {
         ClearScreen();
         cout << "El alumno con legajo " << legajo << " ya esta inscrito en el curso" << endl;
         return;
     }
 
-    nombre = getAlumnoNombreInput();
-    nota = getAlumnoNotaInput();
+    // Buscar si el alumno ya existe en la lista global
+    Alumno* alumnoExistente = findAlumno(alumnos, legajo);
+    Alumno* alumnoParaAgregar = nullptr; // Puntero al alumno que voy a agregar al curso
 
-    Alumno* alumno = findOrCreateAlumno(alumnos, legajo, nombre);
+    int nota;
 
-    if (alumno == nullptr) {
+    if (alumnoExistente != nullptr) {
+        // El alumno ya existe globalmente, usar ese
+        ClearScreen();
+        cout << "El alumno '" << alumnoExistente->GetNombre() << "' (Legajo: " << legajo << ") ya existe." << endl;
+        cout << "Se agregará al curso '" << curso->GetNombre() << "'." << endl;
+        nota = getAlumnoNotaInput();
+        alumnoParaAgregar = alumnoExistente;
+    } else {
+        // El alumno no existe globalmente, hay que crearlo
+        ClearScreen();
+        cout << "Creando nuevo alumno con legajo " << legajo << "." << endl;
+        string nombre = getAlumnoNombreInput();
+        nota = getAlumnoNotaInput();
+
+        alumnoParaAgregar = createAlumno(alumnos, legajo, nombre);
+
+        if (alumnoParaAgregar == nullptr) {
+            ClearScreen();
+            cout << "Error: No se pudo crear el alumno." << endl;
+            return;
+        }
+         cout << "Alumno '" << nombre << "' creado exitosamente." << endl;
+    }
+
+    if (alumnoParaAgregar == nullptr) {
         return;
     }
 
-    curso->AddAlumno(alumno, nota);
+    curso->AddAlumno(alumnoParaAgregar, nota);
 
     ClearScreen();
 }
