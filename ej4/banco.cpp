@@ -10,6 +10,11 @@ CuentaAhorro::CuentaAhorro(string titular, double balance) : CuentaBancaria(titu
 CuentaCorriente::CuentaCorriente(CuentaAhorro* cuentaAhorro) : CuentaBancaria(cuentaAhorro->titular, 0), cuentaAhorro(cuentaAhorro) {}
 
 void CuentaBancaria::depositar(double cantidad) {
+    if (cantidad < 0) {
+        cout << "No se puede depositar una cantidad negativa" << endl;
+        return;
+    }
+
     this->balance += cantidad;
 }
 
@@ -26,6 +31,11 @@ void CuentaAhorro::mostrarInfo() {
 }
 
 void CuentaAhorro::retirar(double cantidad) {
+    if (cantidad < 0) {
+        cout << "No se puede retirar una cantidad negativa" << endl;
+        return;
+    }
+
     if (this->balance - cantidad < 0) {
         cout << "No se puede retirar " << cantidad << "$, el balance es " << this->balance << "$" << endl;
         return;
@@ -40,6 +50,11 @@ void CuentaCorriente::mostrarInfo() {
 }
 
 void CuentaCorriente::retirar(double cantidad) {
+    if (cantidad < 0) {
+        cout << "No se puede retirar una cantidad negativa" << endl;
+        return;
+    }
+
     if (this->balance - cantidad > 0) {
         this->balance = this->balance - cantidad;
         cout << "Se retiraron los " << cantidad << "$ de la cuenta corriente" << endl;
