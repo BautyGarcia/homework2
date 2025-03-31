@@ -89,9 +89,15 @@ Alumno* findOrCreateAlumno(vector<Alumno*>& todosAlumnosPtrs, int legajo, const 
             return ptr;
         }
     }
-    Alumno* nuevoAlumnoPtr = new Alumno(nombre, legajo);
-    todosAlumnosPtrs.push_back(nuevoAlumnoPtr);
-    return nuevoAlumnoPtr;
+
+    try {
+        Alumno* nuevoAlumnoPtr = new Alumno(nombre, legajo);
+        todosAlumnosPtrs.push_back(nuevoAlumnoPtr);
+        return nuevoAlumnoPtr;
+    } catch (const exception& e) {
+        cout << "Error en la linea " << __LINE__ << " de " << __FILE__ << " Hubo un error: " << e.what() << endl;
+    }
+    return nullptr;
 }
 
 void showStatusBar(Curso* curso) {
@@ -128,6 +134,10 @@ void handleAddAlumno(Curso* curso, vector<Alumno*>& alumnos) {
     nota = getAlumnoNotaInput();
 
     Alumno* alumno = findOrCreateAlumno(alumnos, legajo, nombre);
+
+    if (alumno == nullptr) {
+        return;
+    }
 
     curso->AddAlumno(alumno, nota);
 
@@ -176,9 +186,13 @@ void handleCreateCurso(vector<Curso*>& cursos, Curso*& curso) {
     string nombre;
     nombre = getCursoNombreInput();
 
-    Curso* nuevoCurso = new Curso(nombre);
-    cursos.push_back(nuevoCurso);
-    curso = nuevoCurso;
+    try {
+        Curso* nuevoCurso = new Curso(nombre);
+        cursos.push_back(nuevoCurso);
+        curso = nuevoCurso;
+    } catch (const exception& e) {
+        cout << "Error en la linea " << __LINE__ << " de " << __FILE__ << " Hubo un error: " << e.what() << endl;
+    }
 }
 
 // Funcion auxiliar para mostrar los cursos del menu de cursos en terminal
@@ -211,6 +225,13 @@ void handleCursoMenu(vector<Curso*>& cursos, Curso*& curso) {
 
         if (opcion == 0) {
             handleCreateCurso(cursos, curso);
+
+            // Si el curso no se creo, y por ende, no se asigno a curso, no se puede continuar
+            // En el caso en el que haya un curso viejo cargado, se mantiene la sesion en ese
+            if (!curso) {
+                return;
+            }
+
             valid = true;
         }
         else if (opcion > 0 && opcion <= cursos.size()) {

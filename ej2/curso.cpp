@@ -13,9 +13,14 @@ using namespace std;
 
 Curso::Curso(string nombre) : nombre(nombre), alumnos(vector<Alumno*>()) {}
 
+// Constructor de copia (Nunca se usa, pero permite copiar un curso)
 Curso::Curso(const Curso& other) : nombre(other.nombre) {
-    for (Alumno* alumno : other.alumnos) {
-        this->alumnos.push_back(new Alumno(*alumno));
+    try {
+        for (Alumno* alumno : other.alumnos) {
+            this->alumnos.push_back(new Alumno(*alumno));
+        }
+    } catch (const exception& e) {
+        cout << "Error en la linea " << __LINE__ << " de " << __FILE__ << " Hubo un error: " << e.what() << endl;
     }
 }
 
