@@ -27,6 +27,7 @@ class Alumno {
         void EliminarCurso(Curso* curso);
         friend ostream& operator<<(ostream& os, const Alumno& alumno);
         bool operator>(const Alumno& other) const;
+        int getCantidadCursos() const;
 };
 
 #endif

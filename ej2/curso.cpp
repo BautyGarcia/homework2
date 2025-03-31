@@ -45,7 +45,6 @@ void Curso::RemoveAlumno(int legajo) {
         if (this->alumnos[i]->GetLegajo() == legajo) {
             this->alumnos[i]->EliminarCurso(this);
             this->alumnos.erase(this->alumnos.begin() + i);
-            return;
         }
     }
 }
@@ -73,9 +72,7 @@ void Curso::PrintAlumnosOrdenados() const {
 
     cout << "=== Lista de Alumnos Ordenada ===" << endl;
     vector<Alumno*> alumnosOrdenados = this->alumnos;
-    sort(alumnosOrdenados.begin(), alumnosOrdenados.end(), [](const Alumno* a, const Alumno* b) {
-        return b->GetNombre() > a->GetNombre();
-    });
+    sort(alumnosOrdenados.begin(), alumnosOrdenados.end());
 
     for (const Alumno* alumno : alumnosOrdenados) {
         cout << *alumno << endl;

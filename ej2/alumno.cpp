@@ -47,3 +47,7 @@ ostream& operator<<(ostream& os, const Alumno& alumno) {
 bool Alumno::operator>(const Alumno& other) const {
     return this->GetNombre() > other.GetNombre();
 }
+
+int Alumno::getCantidadCursos() const {
+    return this->cursos.size();
+}

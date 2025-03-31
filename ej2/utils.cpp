@@ -183,6 +183,13 @@ void handleRemoveAlumno(Curso* curso, vector<Alumno*>& alumnos) {
         return;
     }
 
+    Alumno* alumno = findAlumno(alumnos, legajo);
+
+    // Si el alumno esta inscrito en un solo curso, se elimina del vector de alumnos
+    if (alumno->getCantidadCursos() == 1) {
+        alumnos.erase(remove(alumnos.begin(), alumnos.end(), alumno), alumnos.end());
+    }
+    
     curso->RemoveAlumno(legajo);
     
     ClearScreen();
