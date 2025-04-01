@@ -23,6 +23,13 @@ void CuentaAhorro::mostrarInfo() {
 
     if (this->contadorMostrarInfo > this->LIMITE_MOSTRAR) {
         cout << "No se puede mostrar info mas de " << this->LIMITE_MOSTRAR << " veces, se cobrará un cargo de " << this->COSTO_MOSTRAR << "$" << endl;
+        
+        // Si no tengo ni la plata para pagar el cargo, no se puede mostrar info
+        if (this->balance - this->COSTO_MOSTRAR < 0) {
+            cout << "No hay fondos suficientes en la cuenta ahorro" << endl;
+            return;
+        }
+
         this->retirar(this->COSTO_MOSTRAR);
     }
 
