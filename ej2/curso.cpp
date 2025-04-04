@@ -72,7 +72,10 @@ void Curso::PrintAlumnosOrdenados() const {
 
     cout << "=== Lista de Alumnos Ordenada ===" << endl;
     vector<Alumno*> alumnosOrdenados = this->alumnos;
-    sort(alumnosOrdenados.begin(), alumnosOrdenados.end());
+
+    sort(alumnosOrdenados.begin(), alumnosOrdenados.end(), [](Alumno* a, Alumno* b) {
+        return *a < *b;
+    });
 
     for (const Alumno* alumno : alumnosOrdenados) {
         cout << *alumno << endl;

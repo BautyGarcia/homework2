@@ -26,7 +26,7 @@ class Alumno {
         void AgregarCurso(Curso* curso, int nota);
         void EliminarCurso(Curso* curso);
         friend ostream& operator<<(ostream& os, const Alumno& alumno);
-        bool operator>(const Alumno& other) const;
+        bool operator<(const Alumno& other) const;
         int getCantidadCursos() const;
 };
 

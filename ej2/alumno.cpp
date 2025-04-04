@@ -44,8 +44,8 @@ ostream& operator<<(ostream& os, const Alumno& alumno) {
     return os;
 }
 
-bool Alumno::operator>(const Alumno& other) const {
-    return this->GetNombre() > other.GetNombre();
+bool Alumno::operator<(const Alumno& other) const {
+    return this->GetNombre() < other.GetNombre();
 }
 
 int Alumno::getCantidadCursos() const {
